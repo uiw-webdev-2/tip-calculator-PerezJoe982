@@ -1,32 +1,39 @@
-/**
- * Passing data to functions through parameters.
- * @link https://developer.mozilla.org/en-US/docs/Glossary/Function
- * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat
- *
- * List of ISO language codes:
- * @link http://www.lingoes.net/en/translator/langcode.htm
- */
 
- const formatter = (locale = "en-US", currency = "USD", value) => {
-    let formattedValue = new Intl.NumberFormat(locale, {
-      style: "currency",
-      currency: currency,
-    }).format(value);
-  
-    return formattedValue;
-  };
-  
-  const tipCalculator = (sum, percentage, locale, currency) => {
-    let tip = sum * (percentage / 100);
-    let total = sum + tip;
-  
-    console.log(`
-      Sum before tip: ${formatter(locale, currency, sum)}
-      Tip percentage: ${percentage}%
-      Tip:            ${formatter(locale, currency, tip)}
-      Total:          ${formatter(locale, currency, total)}
-    `);
-  };
-  
-  tipCalculator(29.95, 18, "en", "USD");
-  
+ //Calculating Tip
+function calculateTip() {
+  var billAmount = document.getElementById("billamount").value;
+  var serviceQuallity = document.getElementById("serviceQuallity").value;
+  var HowManyPeople = document.getElementById("peopleamount").value;
+
+  //validate input
+  if (billAmount === "" || serviceQuallity == 0) {
+    alert("Please enter values");
+    return;
+  }
+  //If input is less than, greater to, or equal to 1 
+  if (HowManyPeople === "" || HowManyPeople <= 1) {
+    HowManyPeople = 1;
+    document.getElementById("each").style.display = "none";
+  } else {
+    document.getElementById("each").style.display = "block";
+  }
+
+  //Calculate the tip
+  var total = (billAmount * serviceQuallity) / HowManyPeople;
+  //Rounding
+  total = Math.round(total * 100) / 100;
+  //Digets after a decimal point
+  total = total.toFixed(2);
+  //Final total
+  document.getElementById("totalTip").style.display = "block";
+  document.getElementById("tip").innerHTML = total;
+}
+
+//Hide the tip amount on load
+document.getElementById("totalTip").style.display = "none";
+document.getElementById("each").style.display = "none";
+
+//click to call function
+document.getElementById("calculate").onclick = function () {
+  calculateTip();
+};
